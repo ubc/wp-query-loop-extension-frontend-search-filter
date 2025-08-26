@@ -1,0 +1,48 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+body .wp-query-filter__search-wrapper{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    max-width: 250px;
+
+    .spinner {
+        content: "";
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-left-color: #09f;
+        animation: spin 1s linear infinite;
+        position: absolute;
+        top: calc(50% - 1rem);
+        right: 15px;
+
+    }
+
+    @keyframes spin {
+        100% {
+          transform: rotate(360deg);
+        }
+    }
+}
+
+body .wp-query-filter__search{
+    width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 5px 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    box-sizing: border-box;
+    position: relative;
+    height: 40px;
+}
