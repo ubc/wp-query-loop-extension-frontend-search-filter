@@ -31,7 +31,7 @@ import { Fragment } from '@wordpress/element';
  */
 export default function Edit( { attributes, setAttributes } ) {
 	const blockProps = useBlockProps();
-	const { instanceId, label } = attributes;
+	const { instanceId, label, accessibleLabel } = attributes;
 	const newInstanceId = useInstanceId( Edit );
 
 	if ( null === instanceId ) {
@@ -48,6 +48,15 @@ export default function Edit( { attributes, setAttributes } ) {
 						onChange={ ( newLabel ) => {
 							setAttributes( {
 								label: newLabel
+							} )
+						} }
+					/>
+					<TextControl
+						label="Accessible Label"
+						value={ accessibleLabel }
+						onChange={ ( newAccessibleLabel ) => {
+							setAttributes( {
+								accessibleLabel: newAccessibleLabel
 							} )
 						} }
 					/>

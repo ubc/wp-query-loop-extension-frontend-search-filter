@@ -11,9 +11,10 @@
  * @package query-taxonomy-filters
  */
 
-$label         = $attributes['label'];
-$identifier    = 'query-' . $block->context['queryId'] . '-search-' . $attributes['instanceId'];
-$search_string = isset( $_GET[ $identifier ] ) && ! empty( $_GET[ $identifier ] ) ? sanitize_text_field( $_GET[ $identifier ] ) : '';
+$label            = $attributes['label'];
+$identifier       = 'query-' . $block->context['queryId'] . '-search-' . $attributes['instanceId'];
+$search_string    = isset( $_GET[ $identifier ] ) && ! empty( $_GET[ $identifier ] ) ? sanitize_text_field( wp_unslash( $_GET[ $identifier ] ) ) : '';
+$accessible_label = $attributes['accessibleLabel'];
 
 $conext = array(
 	'search' => $search_string,
@@ -28,9 +29,13 @@ $conext = array(
 	<?php echo wp_interactivity_data_wp_context( $conext ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> 
 >
 	<div class="wp-query-filter__search-wrapper">
+		<div class="live-region screen-reader-text" aria-live="polite" aria-atomic="true"></div>
+		<label class="screen-reader-text" for="<?php echo esc_attr( $identifier ); ?>"><?php echo ! empty( $accessible_label ) ? esc_html( $accessible_label ) : __( 'Search', 'query-search-filter' ); ?></label>
 		<input
 			type="search"
 			placeholder="<?php echo esc_attr( $label ); ?>"
+			id="<?php echo esc_attr( $identifier ); ?>"
+			aria-label="<?php echo esc_attr( ! empty( $accessible_label ) ? $accessible_label : $label ); ?>"
 			data-wp-on--input="actions.onChangeSearch"
 			data-wp-bind--value="context.search"
 			class="wp-query-filter__search"
