@@ -30,7 +30,7 @@ $conext = array(
 >
 	<div class="wp-query-filter__search-wrapper">
 		<div class="live-region screen-reader-text" aria-live="polite" aria-atomic="true"></div>
-		<label class="screen-reader-text" for="<?php echo esc_attr( $identifier ); ?>"><?php echo ! empty( $accessible_label ) ? esc_html( $accessible_label ) : __( 'Search', 'query-search-filter' ); ?></label>
+		<label class="screen-reader-text" for="<?php echo esc_attr( $identifier ); ?>"><?php echo ! empty( $accessible_label ) ? esc_html( $accessible_label ) : esc_html__( 'Search', 'query-search-filter' ); ?></label>
 		<input
 			type="search"
 			placeholder="<?php echo esc_attr( $label ); ?>"

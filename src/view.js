@@ -17,7 +17,11 @@ const updateURLParameter = ( url, urlParameters ) => {
 
 const updateLiveRegion = ( element ) => {
 	const liveRegion = element.querySelector( '.live-region' );
-	
+
+	if ( ! liveRegion ) {
+		return;
+	}
+
 	// Screen readers often suppress announcements if the new text is identical to the old text.
 	// We alternate by adding a non-breaking space at the end to force a perceived change.
 	if ( liveRegion.textContent === "Content updated." ) {
@@ -36,8 +40,24 @@ store( 'ctlt-query-search-filter', {
 			if ( event.target.value === context.search ) return;
 			clearTimeout( context.lock );
 
+			// Hide the existing results as soon as the user starts typing,
+			// while the debounce spinner is showing.
+			const queryRef = event.target.closest(
+				'.wp-block-query[data-wp-router-region]'
+			);
+			if ( queryRef ) {
+				queryRef.classList.add( 'is-loading-content' );
+				queryRef.setAttribute( 'aria-busy', 'true' );
+			}
+
 			context.lock = setTimeout(
                 () => {
+					// If the value reverted to the current search, no navigation
+					// will happen — restore the hidden results.
+					if ( event.target.value === context.search && queryRef ) {
+						queryRef.classList.remove( 'is-loading-content' );
+						queryRef.removeAttribute( 'aria-busy' );
+					}
 					context.search = event.target.value;
 					context.lock = null;
 				},
@@ -75,7 +95,16 @@ store( 'ctlt-query-search-filter', {
 				]
 			);
 
-			yield actions.navigate( navigateTo );	
+			// Dim the existing results while the new content loads.
+			queryRef.classList.add( 'is-loading-content' );
+			queryRef.setAttribute( 'aria-busy', 'true' );
+
+			try {
+				yield actions.navigate( navigateTo );
+			} finally {
+				queryRef.classList.remove( 'is-loading-content' );
+				queryRef.removeAttribute( 'aria-busy' );
+			}
 
 			updateLiveRegion(ref);
 		},

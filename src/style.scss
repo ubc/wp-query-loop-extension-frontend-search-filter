@@ -5,11 +5,12 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-body .wp-query-filter__search-wrapper{
+body .wp-query-filter__search-wrapper {
     position: relative;
     display: inline-block;
     width: 100%;
     max-width: 250px;
+    margin-bottom: 10px;
 
     .spinner {
         content: "";
@@ -20,19 +21,19 @@ body .wp-query-filter__search-wrapper{
         border-left-color: #09f;
         animation: spin 1s linear infinite;
         position: absolute;
-        top: calc(50% - 6px);
+        top: calc(50% - 11px);
         right: 15px;
 
     }
 
     @keyframes spin {
         100% {
-          transform: rotate(360deg);
+            transform: rotate(360deg);
         }
     }
 }
 
-body .wp-query-filter__search{
+body .wp-query-filter__search {
     width: 100%;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -45,4 +46,35 @@ body .wp-query-filter__search{
     box-sizing: border-box;
     position: relative;
     height: 40px;
+    margin-bottom: 0;
+}
+
+/**
+ * While a search navigation is in flight, dim the stale results and disable
+ * interaction with them. Layout is preserved (no jump/collapse), and the
+ * activity cue is the debounce spinner in the search input itself.
+ * The dimming is a visual cue only — screen readers are informed via aria-busy
+ * and the interactivity router's built-in announcements (see view.js).
+ */
+.wp-block-query {
+
+    .wp-block-post-template,
+    .wp-block-query-no-results,
+    .wp-block-query-pagination {
+        transition: opacity 0.2s ease;
+
+        @media (prefers-reduced-motion: reduce) {
+            transition: none;
+        }
+    }
+
+    &.is-loading-content {
+
+        .wp-block-post-template,
+        .wp-block-query-no-results,
+        .wp-block-query-pagination {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+    }
 }
