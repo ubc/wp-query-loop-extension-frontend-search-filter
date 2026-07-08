@@ -26,6 +26,8 @@ body .wp-query-filter__search-wrapper {
         right: 15px;
         margin-top: auto;
         margin-bottom: auto;
+        margin-block-start: auto !important;
+        margin-block-end: auto !important;
     }
 
     @keyframes spin {
